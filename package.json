@@ -1,0 +1,21 @@
+{
+  "name": "task-manager-electron",
+  "version": "1.0.0",
+  "description": "Uma aplicação de gestão de tarefas Single-Page Application (SPA) empacotada com Electron.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "electron",
+    "spa",
+    "javascript"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^39.2.6",
+    "electron-reloader": "^1.2.3"
+  }
+}

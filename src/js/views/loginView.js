@@ -1,68 +1,70 @@
-/**
- * src/views/loginView.js
- * * Responsável por renderizar a vista de Login/Registo.
- */
-
-// Importa funções de manipulação de DOM, se existirem (ex: createElement, render)
+import { AppStore, router } from "../app.js"; // Importar Store e Router
+import { ApiService } from "../services/api.js";
 
 export function renderLoginView() {
-    // Cria o elemento principal da vista
-    const loginView = document.createElement('section');
-    loginView.id = 'login-view';
-    // Aplica classes CSS para estilização (ex: centralização, fundo)
-    loginView.classList.add('view-container'); 
+  const loginView = document.createElement("section");
+  loginView.id = "login-view";
+  loginView.className = "view-container";
 
-    // Conteúdo da Vista
-    loginView.innerHTML = `
+  loginView.innerHTML = `
         <div class="login-card">
-            <h1>Bem-vindo(a) ao Task Manager!</h1>
-            
-            <p class="slogan">
-                "Organize o seu CHAOS, liberte a sua mente."
-            </p>
+            <h1>Bem-vindo(a)</h1>
+            <p class="slogan">"Organize o seu caos, liberte a sua mente."</p>
+
+            <div class="input-group">
+                <input type="text" id="username-input" placeholder="Nome de utilizador (ex: admin)" />
+            </div>
 
             <div class="action-buttons">
-                <button id="btn-login" class="primary-button">
-                    Entrar (Login)
-                </button>
-                
-                <button id="btn-signup" class="secondary-button">
-                    Registar (Sign Up)
-                </button>
+                <button id="btn-login" class="primary-button">Entrar</button>
             </div>
-            
-            <p class="small-text">
-                O seu painel de produtividade a um clique de distância.
-            </p>
+            <p id="error-msg" style="color: red; display: none;"></p>
         </div>
     `;
 
-    // Adiciona event listeners aos botões
-    loginView.querySelector('#btn-login').addEventListener('click', handleLoginClick);
-    loginView.querySelector('#btn-signup').addEventListener('click', handleSignupClick);
+  const executeLogin = async () => {
+    console.log("🖱️ Botão clicado ou Enter pressionado!"); // Log para debug
 
-    // Retorna o elemento DOM completo para ser injetado no #app
-    return loginView;
+    const usernameInput = loginView.querySelector("#username-input").value;
+    const errorMsg = loginView.querySelector("#error-msg");
+
+    // Validação simples
+    if (!usernameInput) {
+        console.log("⚠️ Campo vazio");
+        return;
+    }
+
+    console.log(`📡 A pedir login para: ${usernameInput}`);
+
+    // 1. Chamar a API
+    const response = await ApiService.login(usernameInput);
+
+    if (response.success) {
+      console.log("✅ Login com sucesso! A mudar de ecrã...");
+      
+      // 2. Atualizar o Estado Global
+      AppStore.currentUser = response.user;
+
+      // 3. Chamar o Router para mudar de ecrã
+      router();
+    } else {
+      console.log("❌ Erro no login:", response.message);
+      errorMsg.textContent = response.message;
+      errorMsg.style.display = "block";
+    }
+  };
+
+  // --- EVENTO 1: Clique no Botão ---
+  const btn = loginView.querySelector("#btn-login");
+  btn.addEventListener("click", executeLogin);
+
+  // --- EVENTO 2: Tecla Enter no Input ---
+  const input = loginView.querySelector("#username-input");
+  input.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+      executeLogin(); // Chama a mesma função do botão
+    }
+  });
+
+  return loginView;
 }
-
-/**
- * Função placeholder para lidar com o clique no botão de Login.
- * Normalmente abriria um Modal com o formulário de login[cite: 17, 34].
- */
-function handleLoginClick() {
-    console.log('Login button clicked - Implementar abertura do Modal de Login.');
-    // Ex: openModal('login');
-}
-
-/**
- * Função placeholder para lidar com o clique no botão de Registo.
- * Normalmente abriria um Modal com o formulário de registo[cite: 17, 34].
- */
-function handleSignupClick() {
-    console.log('Sign Up button clicked - Implementar abertura do Modal de Registo.');
-    // Ex: openModal('signup');
-}
-
-// Para uso no app.js:
-// const appDiv = document.getElementById('app');
-// appDiv.appendChild(renderLoginView());

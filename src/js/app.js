@@ -22,21 +22,36 @@ function updateNavbar(user) {
 
     if (user) {
         // --- MODO DASHBOARD (Utilizador Logado) ---
-        // Mostra mensagem de boas-vindas e talvez um botão de Logout
         navbar.innerHTML = `
             <ul>
-                <li>Bem-vindo, ${user.username}</li>
+                <li class="navtitle">DO-DID</li>
+                <li class="navtitle">|</li>
+                <li class="navtitle">Bem-vindo, ${user.username}</li>
+                <li class="navtitle red clickable" id="btn-logout"><u>Logout </u></button></li>
             </ul>
         `;
+        // --- LÓGICA DE LOGOUT ---
+        // Adicionamos o evento ao botão que acabámos de criar
+        const btnLogout = document.getElementById('btn-logout');
+        if (btnLogout) {
+            btnLogout.addEventListener('click', () => {
+                console.log("A terminar sessão...");
+                
+                AppStore.currentUser = null;
+                
+                AppStore.categories = [];
+                AppStore.tasks = [];
+
+                router();
+            });
+        }
+
     } else {
         // --- MODO LOGIN (Padrão) ---
-        // Volta ao menu original "File / About"
         navbar.innerHTML = `
             <ul>
-                <li>File</li>
-                <li>About</li>
+                <li class="navtitle">DO-DID</li>
             </ul>
-            Cool Titlebar
         `;
     }
 }

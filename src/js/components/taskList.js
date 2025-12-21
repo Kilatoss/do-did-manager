@@ -1,13 +1,9 @@
-/**
- * src/js/components/taskList.js
- * Renderiza a tabela de tarefas com detalhes e sub-tasks.
- */
 export function renderTaskList(tasks) {
     const container = document.createElement('div');
     container.className = 'task-list-container';
 
     if (tasks.length === 0) {
-        container.innerHTML = '<p class="empty-state">Nenhuma tarefa encontrada nesta categoria.</p>';
+        container.innerHTML = `<p class="empty-state">Nenhuma tarefa encontrada nesta categoria.</p>`;
         return container;
     }
 
@@ -32,7 +28,6 @@ export function renderTaskList(tasks) {
     tasks.forEach(task => {
         const row = document.createElement('tr');
         
-        // Formatar Data
         const date = new Date(task.deadline).toLocaleDateString('pt-PT');
         
         // Lógica de Cor da Urgência 
@@ -40,7 +35,7 @@ export function renderTaskList(tasks) {
         if (task.urgency === 'Vermelho') urgencyClass = 'urgency-high';
         else if (task.urgency === 'Amarelo') urgencyClass = 'urgency-medium';
 
-        // Renderizar Sub-tasks (se existirem) [cite: 34]
+        // Renderizar Sub-tasks (se existirem)
         let subtasksHTML = '';
         if (task.subTasks && task.subTasks.length > 0) {
             subtasksHTML = `<ul class="subtask-list">`;

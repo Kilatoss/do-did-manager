@@ -3,70 +3,131 @@ import { ApiService } from "../services/api.js";
 import { openCreateAccountModal } from "../components/create-account.js";
 
 export function renderLoginView() {
-  const loginView = document.createElement("section");
-  loginView.id = "login-view";
-  loginView.className = "view-container";
+  const container = document.createElement("div");
+  container.className = "view-container";
+  
+  // Criamos um container com scroll para englobar as duas secções
+  // Isto garante que a Navbar (que está fora disto) fica sempre visível
+  container.innerHTML = `
+    <div id="scroll-container" class="login-scroll-container">
+        
+        <section id="login-section" class="full-page-section login-section">
+            <div class="login-card">
+                <h1 class="app-title">DO-DID MANAGER</h1>
+                <h2 class="slogan">START <span style="color: var(--red);">DOING</span> WHAT <br> YOU SHOULD'VE <span style="color: var(--accent-color);">DID</span></h2>
 
-  loginView.innerHTML = `
-        <div class="login-card">
-            <h1 class="slogan">START <span style="color: var(--red);">DOING</span> WHAT YOU SHOULD'VE <span style="color: var(--accent-color);">DID</span></h1>
+                <input type="text" id="username-input" placeholder="Username" autocomplete="username" /> <br/>
+                <input type="password" id="password-input" placeholder="Password" autocomplete="current-password" />
 
-            <input type="text" id="username-input" placeholder="Username" autocomplete="username" />
-
-            <div class="action-buttons">
-                <button id="btn-signup" class="button-style">Criar Conta</button>
-                <button id="btn-login" class="button-style">Entrar</button>
+                <div class="action-buttons">
+                    <button id="btn-signup" class="button-style">Criar Conta</button>
+                    <button id="btn-login" class="button-style">Entrar</button>
+                </div>
+                <p id="error-msg" style="color: red; display: none; margin-top:10px;"></p>
             </div>
-            <p id="error-msg" style="color: red; display: none;"></p>
-        </div>
-    `;
+            
+            <button id="go-to-about" class="scroll-nav-btn">
+                Sobre o Projeto ↓
+            </button>
+        </section>
 
-  loginView.querySelector('#btn-signup').addEventListener('click', () => {
-      openCreateAccountModal(); 
+        <section id="about-section" class="full-page-section about-section-styled">
+            
+            <button id="back-to-login" class="scroll-nav-btn up">
+                ↑ Voltar ao Login
+            </button>
+
+            <div class="about-header">
+                <h3 class="about-title">Gestão Inteligente</h3>
+                <p>O DO-DID Manager não é apenas mais uma lista de tarefas. É o teu companheiro académico e profissional para transformar a procrastinação em produtividade.</p>
+            </div>
+
+            <div class="about-grid">
+                <div class="feature-card">
+                    <span class="feature-icon">📂</span>
+                    <h4 class="feature-title">Organização</h4>
+                    <p>Cria categorias personalizadas com cores únicas para separar a vida pessoal da profissional.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">🔥</span>
+                    <h4 class="feature-title">Urgência</h4>
+                    <p>Sistema visual de prioridades. Foca no que é realmente importante com indicadores de cor.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">🚀</span>
+                    <h4 class="feature-title">Foco</h4>
+                    <p>Modo "Focus" para trabalhar numa categoria de cada vez sem distrações visuais.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+  `;
+
+  const scrollContainer = container.querySelector("#scroll-container");
+  const loginSection = container.querySelector("#login-section");
+  const aboutSection = container.querySelector("#about-section");
+
+  // 1. Botões de Navegação (Clique)
+  container.querySelector("#go-to-about").addEventListener("click", () => {
+    aboutSection.scrollIntoView({ behavior: "smooth" });
   });
+
+  container.querySelector("#back-to-login").addEventListener("click", () => {
+    loginSection.scrollIntoView({ behavior: "smooth" });
+  });
+
+  // 2. Navegação por Teclado (Setas)
+  // Nota: Adicionamos o listener ao documento, mas precisamos de garantir que não interfere com inputs
+  const handleKeyScroll = (e) => {
+    if (document.activeElement.tagName === "INPUT") return;
+
+    if (e.key === "ArrowDown") {
+        e.preventDefault(); // Impede o scroll padrão brusco
+        aboutSection.scrollIntoView({ behavior: "smooth" });
+    } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        loginSection.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  document.addEventListener("keydown", handleKeyScroll);
+
+  container.querySelector("#btn-signup").addEventListener("click", () => {
+    openCreateAccountModal();
+  });
+
   const executeLogin = async () => {
-    console.log(" Botão clicado ou Enter pressionado!"); // Log para debug
+    const usernameInput = container.querySelector("#username-input").value;
+    const passwordInput = container.querySelector("#password-input").value;
+    const errorMsg = container.querySelector("#error-msg");
 
-    const usernameInput = loginView.querySelector("#username-input").value;
-    const errorMsg = loginView.querySelector("#error-msg");
-
-    // Validação simples
-    if (!usernameInput) {
-        console.log("Campo vazio");
-        return;
+    if (!usernameInput || !passwordInput) {
+      errorMsg.textContent = "Por favor, preencha ambos os campos.";
+      errorMsg.style.display = "block";
+      return;
     }
 
-    console.log(` A pedir login para: ${usernameInput}`);
-
-    // 1. Chamar a API
-    const response = await ApiService.login(usernameInput);
+    const response = await ApiService.login(usernameInput, passwordInput);
 
     if (response.success) {
-      console.log(" Login com sucesso! A mudar de ecrã...");
+      // Remover listener de scroll antes de sair
+      document.removeEventListener("keydown", handleKeyScroll); 
       
-      // 2. Atualizar o Estado Global
       AppStore.currentUser = response.user;
-
-      // 3. Chamar o Router para mudar de ecrã
       router();
     } else {
-      console.log(" Erro no login:", response.message);
       errorMsg.textContent = response.message;
       errorMsg.style.display = "block";
     }
   };
 
-  // --- EVENTO 1: Clique no Botão ---
-  const btn = loginView.querySelector("#btn-login");
-  btn.addEventListener("click", executeLogin);
-
-  // --- EVENTO 2: Tecla Enter no Input ---
-  const input = loginView.querySelector("#username-input");
-  input.addEventListener("keypress", (e) => {
-    if (e.key === "Enter") {
-      executeLogin(); // Chama a mesma função do botão
-    }
+  container.querySelector("#btn-login").addEventListener("click", executeLogin);
+  container.querySelector("#username-input").addEventListener("keypress", (e) => {
+    if (e.key === "Enter") executeLogin();
+  });
+  container.querySelector("#password-input").addEventListener("keypress", (e) => {
+    if (e.key === "Enter") executeLogin();
   });
 
-  return loginView;
+  return container;
 }

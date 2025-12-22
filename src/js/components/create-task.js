@@ -124,7 +124,7 @@ export function openCreateTaskModal(categoryId, onSuccess) {
         const title = document.getElementById('task-title').value;
         const description = document.getElementById('task-desc').value;
         const urgency = urgencySelect.value;
-        const deadline = document.getElementById('task-deadline').value;
+        const deadlineInput = document.getElementById('task-deadline').value;
         const errorMsg = document.getElementById('task-error');
 
         if (!title) {
@@ -144,13 +144,16 @@ export function openCreateTaskModal(categoryId, onSuccess) {
             });
         }
 
+        const defaultDate = "1970-01-01T12:00:00.000+00:00";
+        const finalDeadline = deadlineInput ? deadlineInput : defaultDate;
+
         const newTaskPayload = {
-            userId: AppStore.currentUser._id || AppStore.currentUser.user._id, // Garantir ID correto
+            userId: AppStore.currentUser._id || AppStore.currentUser.user._id,
             categoryId: categoryId,
             title,
             description,
             urgency,
-            deadline, // Formato ISO do input datetime-local
+            deadline: finalDeadline,
             subTasks
         };
 

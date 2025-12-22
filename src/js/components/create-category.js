@@ -57,8 +57,8 @@ export function openCreateCategoryModal(onSuccessCallback) {
                 <p id="cat-error" style="color: red; display: none; font-size: 0.9rem; margin-top: 10px;"></p>
 
                 <div class="modal-actions">
-                    <button id="btn-cancel-cat" class="secondary-button">Cancelar</button>
-                    <button id="btn-confirm-cat" class="primary-button">Criar</button>
+                    <button id="btn-cancel-cat" class="button-style">Cancelar</button>
+                    <button id="btn-confirm-cat" class="button-style">Criar</button>
                 </div>
             </div>
         </div>

@@ -1,0 +1,44 @@
+@font-face {
+    font-family: titleFont;
+    src: url("../assets/Jersey15-Regular.ttf");
+}
+@font-face {
+    font-family: textfont;
+    src: url("../assets/Jost-Light.ttf");
+}
+
+:root {
+    --primary-color: #8fb6da;
+    --accent-color: #0b8df7;
+    --red: #ce1717;
+    --title-color: #312b31;
+    --text-color: #424546;
+    --secondary-color: #f1f1f1;
+    --input-border: #ccc;
+    --input-focus: #0b8df7;
+}
+.red {
+    color: var(--red) !important;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0; 
+    padding: 0;
+    overflow: hidden;
+    background-color: var(--primary-color);
+    width: 100vw;
+    font-family: textfont; 
+}
+
+.fade-in {
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}

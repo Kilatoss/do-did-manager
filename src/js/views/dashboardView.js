@@ -23,8 +23,6 @@ export function renderDashboardView() {
         <h2 id="page-title" class="title">As minhas Categorias</h2>
         <div class="actions">
             <button id="btn-back" class="button-style" style="display:none;">← Voltar</button>
-            <button class="button-style" id="view-table">Tabela</button>
-            <button class="button-style" id="view-timeline">Timeline</button>
             <button id="btn-add-task" class="button-style">+ Criar Categoria</button>
         </div>
     `;

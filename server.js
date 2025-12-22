@@ -21,25 +21,42 @@ const server = http.createServer(async (req, res) => {
     req.on("end", async () => {
       try {
         const usersCollection = db.collection("user");
-        const { username } = JSON.parse(body);
+
+        const { username, password } = JSON.parse(body);
 
         console.log(` A procurar utilizador: "${username}"`);
 
         const user = await usersCollection.findOne({ username: username });
-
         res.writeHead(200, { "Content-Type": "application/json" });
 
-        if (user) {
-          // Remove a password antes de enviar (segurança básica)
-          const { password, ...safeUser } = user;
-          console.log("Utilizador encontrado!");
-          res.end(JSON.stringify({ success: true, user: safeUser }));
-        } else {
+        if (!user) {
           console.log("Utilizador não existe.");
           res.end(
             JSON.stringify({
               success: false,
               message: "Utilizador não encontrado.",
+            })
+          );
+        }
+        else if (user.password !== password) {
+          console.log("Password incorreta.");
+          res.end(
+            JSON.stringify({
+              success: false,
+              message: "Password incorreta.",
+            })
+          );
+        }
+        else if (user) {
+          const { password, ...safeUser } = user;
+          console.log("Utilizador encontrado!");
+          res.end(JSON.stringify({ success: true, user: safeUser }));
+        } else {
+          console.log("Erro desconhecido no login.");
+          res.end(
+            JSON.stringify({
+              success: false,
+              message: "Erro desconhecido.",
             })
           );
         }

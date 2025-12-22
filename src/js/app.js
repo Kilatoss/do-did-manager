@@ -1,15 +1,9 @@
-/**
- * src/js/app.js
- * Ponto de entrada da aplicação. Responsável pela inicialização e pelo Router.
- */
-
 import { renderLoginView } from './views/loginView.js';
-// Agora importamos a vista real do Dashboard
 import { renderDashboardView } from './views/dashboardView.js';
 
 // --- 1. Gestão de Estado (Store) ---
 const AppStore = {
-    currentUser: null, // Começa vazio, será preenchido pelo Login
+    currentUser: null,
     categories: [], 
     activeCategory: null, 
     viewMode: 'Table' 
@@ -23,7 +17,7 @@ function updateNavbar(user) {
     if (user) {
         // --- MODO DASHBOARD (Utilizador Logado) ---
         navbar.innerHTML = `
-            <ul>
+            <ul id="nav-ul">
                 <li class="navtitle">DO-DID</li>
                 <li class="navtitle">|</li>
                 <li class="navtitle">Bem-vindo, ${user.username}</li>

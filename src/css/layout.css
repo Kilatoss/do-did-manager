@@ -1,0 +1,82 @@
+.titlebar {
+    height: 60px;
+    background: #2b252c;
+    color: white;
+    display: flex;
+    position: relative;
+    justify-content: space-between;
+    align-items: center;
+    -webkit-app-region: drag;
+    padding: 0 10px;
+}
+
+.navtitle {
+    color: var(--accent-color);
+    font-family: titleFont;
+}
+
+.title {
+    font-family: titleFont;
+    letter-spacing: 2px;
+    color: var(--title-color);
+    font-size: 4vw;
+}
+
+.titlebar ul {
+    list-style: none;
+    display: flex;
+    justify-content: start !important;
+    align-items: start;
+    -webkit-app-region: no-drag;
+    padding-left: 0;
+}
+
+.titlebar li {
+    display: block;
+    padding: 0 10px;
+    line-height: 30px;
+    font-size: 2rem;
+    cursor: default;
+}
+
+.clickable:hover {
+    cursor: pointer !important;
+    filter: brightness(120%);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+
+.full-page-section {
+    height: 100%;
+    width: 100%;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.view-container {
+    width: 100vw !important;
+    height: calc(100vh - 60px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--primary-color);
+}
+
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: transparent; 
+}
+::-webkit-scrollbar-thumb {
+    background: #ccc; 
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #aaa; 
+}

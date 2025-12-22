@@ -12,6 +12,7 @@ const client = new MongoClient(MONGO_URL);
 let db;
 
 const server = http.createServer(async (req, res) => {
+  console.log(req.url);
   if (req.url === "/" && req.method === "GET") {
         const filePath = path.join(__dirname, 'public', 'index.html'); 
 

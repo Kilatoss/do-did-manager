@@ -14,8 +14,8 @@ export function renderLoginView() {
                 <h1 class="app-title">DO-DID MANAGER</h1>
                 <h2 class="slogan">START <span style="color: var(--red);">DOING</span> WHAT <br> YOU SHOULD'VE <span style="color: var(--accent-color);">DID</span></h2>
 
-                <input type="text" id="username-input" placeholder="Username" autocomplete="username" /> <br/>
-                <input type="password" id="password-input" placeholder="Password" autocomplete="current-password" />
+                <input type="text" id="username-input" placeholder="Nome de Usuário" autocomplete="username" /> <br/>
+                <input type="password" id="password-input" placeholder="Palavra-Passe" autocomplete="current-password" />
 
                 <div class="action-buttons">
                     <button id="btn-login" class="button-style">Entrar</button>

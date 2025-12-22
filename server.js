@@ -4,7 +4,7 @@ const crypto = require("crypto")
 const fs = require('fs');
 const path = require('path');
 
-const PORT = 80;
+const PORT = 3000;
 const MONGO_URL = "mongodb://localhost:27017";
 const DB_NAME = "do-did";
 

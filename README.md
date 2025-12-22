@@ -6,11 +6,11 @@
 
 ---
 
+![Application Screenshot](./src/assets/screenshot.png)
+
 This repository contains the source code for the **Do-Did Manager**, a responsive desktop application developed using **Electron**, **Node.js**, and **MongoDB**. The goal of the application is to transform procrastination into productivity through intelligent task management.
 
 The project was built using **HTML5**, **CSS3**, and **Vanilla JavaScript (ES6 Modules)**, adhering to strict requirements: no external libraries (besides Electron and MongoDB) and a custom-built Node.js server using native modules.
-
-> **Note:** The application interface and user experience are designed entirely in **Portuguese**.
 
 ---
 ## Features (Assignment Requirements)

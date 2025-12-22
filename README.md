@@ -69,13 +69,13 @@ Run the following commands in your terminal (at the project root):
 
 ```bash
 # Import Users
-mongoimport --db do-did --collection user --file users.json --jsonArray
+mongoimport --db do-did --collection user --file do-did.users.json --jsonArray
 
 # Import Categories
-mongoimport --db do-did --collection categories --file categories.json --jsonArray
+mongoimport --db do-did --collection categories --file do-did.categories.json --jsonArray
 
 # Import Tasks
-mongoimport --db do-did --collection tasks --file tasks.json --jsonArray
+mongoimport --db do-did --collection tasks --file do-did.tasks.json --jsonArray
 
 ```
 

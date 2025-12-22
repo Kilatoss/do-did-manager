@@ -1,6 +1,8 @@
 const http = require("http");
 const { MongoClient, ObjectId } = require("mongodb");
 const crypto = require("crypto")
+const fs = require('fs');
+const path = require('path');
 
 const PORT = 3000;
 const MONGO_URL = "mongodb://localhost:27017";
@@ -10,7 +12,48 @@ const client = new MongoClient(MONGO_URL);
 let db;
 
 const server = http.createServer(async (req, res) => {
-  // 1. Endpoint de LOGIN (Apenas Username)
+  if (req.url === "/" && req.method === "GET") {
+        const filePath = path.join(__dirname, 'public', 'index.html'); 
+
+        fs.readFile(filePath, (err, content) => {
+            if (err) {
+                res.writeHead(500);
+                res.end("Erro: index.html não encontrado. Verifica se a pasta se chama 'public'.");
+            } else {
+                res.writeHead(200, { "Content-Type": "text/html" });
+                res.end(content);
+            }
+        });
+        return; 
+    }
+    if (req.method === "GET" && (req.url.startsWith("/src") || req.url.startsWith("/assets"))) {
+        const cleanUrl = req.url.split('?')[0];
+        const filePath = path.join(__dirname, cleanUrl);
+
+        const ext = path.extname(filePath).toLowerCase();
+        const mimeTypes = {
+            '.html': 'text/html',
+            '.js': 'text/javascript',
+            '.css': 'text/css',
+            '.json': 'application/json',
+            '.png': 'image/png',
+            '.jpg': 'image/jpg',
+            '.ttf': 'font/ttf'
+        };
+        const contentType = mimeTypes[ext] || 'application/octet-stream';
+
+        fs.readFile(filePath, (err, content) => {
+            if (err) {
+                res.writeHead(404);
+                res.end("Ficheiro não encontrado");
+            } else {
+                res.writeHead(200, { "Content-Type": contentType });
+                res.end(content);
+            }
+        });
+        return;
+    }
+  // 1. Endpoint de LOGIN
   if (req.url === "/api/login" && req.method === "POST") {
     let body = "";
     req.on("data", (chunk) => (body += chunk.toString()));

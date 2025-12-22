@@ -6,7 +6,7 @@ export const ApiService = {
       const response = await fetch(`${API_URL}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }), // Envia apenas { username: "..." }
+        body: JSON.stringify({ username, password }),
       });
 
       if (!response.ok) {
@@ -76,6 +76,19 @@ export const ApiService = {
       return await response.json();
     } catch (error) {
       console.error("Erro ao criar tarefa:", error);
+      return { success: false, message: "Erro de comunicação." };
+    }
+  },
+  updateTask: async (taskId, updates) => {
+    try {
+      const response = await fetch(`${API_URL}/tasks/${taskId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updates),
+      });
+      return await response.json();
+    } catch (error) {
+      console.error("Erro no updateTask:", error);
       return { success: false, message: "Erro de comunicação." };
     }
   },

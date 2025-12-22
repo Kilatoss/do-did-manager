@@ -1,5 +1,6 @@
 {
-  "name": "task-manager-electron",
+  "name": "do-did-manager",
+  "productName": "Do-Did Manager",
   "version": "1.0.0",
   "description": "Uma aplicação de gestão de tarefas Single-Page Application (SPA) empacotada com Electron.",
   "main": "main.js",

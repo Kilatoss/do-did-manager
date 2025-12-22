@@ -38,11 +38,15 @@
     font-size: 2rem;
     cursor: default;
 }
-
+.clickable
+{
+    color: var(--red);
+    transition: all 0.2s ease;
+}
 .clickable:hover {
     cursor: pointer !important;
-    filter: brightness(120%);
-    background: rgba(255, 255, 255, 0.1);
+    color: var(--darkestRed);
+    transition: all 0.2s ease;
 }
 
 

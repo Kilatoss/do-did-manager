@@ -1,19 +1,16 @@
 const http = require("http");
-const { MongoClient } = require("mongodb");
+const { MongoClient, ObjectId } = require("mongodb");
+const crypto = require("crypto")
 
-// Configuração
 const PORT = 3000;
-const MONGO_URL = "mongodb://localhost:27017"; // Confirma se é esta a porta do teu screen
+const MONGO_URL = "mongodb://localhost:27017";
 const DB_NAME = "do-did";
 
 const client = new MongoClient(MONGO_URL);
-let db; // Variável global para guardar a conexão à BD
+let db;
 
 const server = http.createServer(async (req, res) => {
-  // Log para debug
-  console.log(`Pedido: ${req.method} ${req.url}`);
-
-  // 2. Endpoint de LOGIN (Apenas Username)
+  // 1. Endpoint de LOGIN (Apenas Username)
   if (req.url === "/api/login" && req.method === "POST") {
     let body = "";
     req.on("data", (chunk) => (body += chunk.toString()));
@@ -21,56 +18,44 @@ const server = http.createServer(async (req, res) => {
     req.on("end", async () => {
       try {
         const usersCollection = db.collection("user");
-
         const { username, password } = JSON.parse(body);
-
-        console.log(` A procurar utilizador: "${username}"`);
-
         const user = await usersCollection.findOne({ username: username });
         res.writeHead(200, { "Content-Type": "application/json" });
 
         if (!user) {
-          console.log("Utilizador não existe.");
-          res.end(
-            JSON.stringify({
-              success: false,
-              message: "Utilizador não encontrado.",
-            })
-          );
+          res.end(JSON.stringify({ success: false, message: "Utilizador não encontrado." }));
+          return;
         }
-        else if (user.password !== password) {
-          console.log("Password incorreta.");
-          res.end(
-            JSON.stringify({
-              success: false,
-              message: "Password incorreta.",
-            })
-          );
+
+        if (!user.salt || !user.hash) {
+             if (user.password === password) {
+                 const { password, ...safeUser } = user;
+                 res.end(JSON.stringify({ success: true, user: safeUser }));
+                 return;
+             }
+             res.end(JSON.stringify({ success: false, message: "Formato de conta inválido. Registe-se novamente." }));
+             return;
         }
-        else if (user) {
-          const { password, ...safeUser } = user;
-          console.log("Utilizador encontrado!");
-          res.end(JSON.stringify({ success: true, user: safeUser }));
+
+        const derivedKey = crypto.scryptSync(password, user.salt, 64);
+        const derivedHash = derivedKey.toString('hex');
+
+        if (derivedHash !== user.hash) {
+          res.end(JSON.stringify({ success: false, message: "Password incorreta." }));
         } else {
-          console.log("Erro desconhecido no login.");
-          res.end(
-            JSON.stringify({
-              success: false,
-              message: "Erro desconhecido.",
-            })
-          );
+          const { hash, salt, ...safeUser } = user;
+          res.end(JSON.stringify({ success: true, user: safeUser }));
         }
+
       } catch (error) {
         console.error("Erro interno:", error);
         res.writeHead(500);
-        res.end(
-          JSON.stringify({ success: false, message: "Erro de Servidor" })
-        );
+        res.end(JSON.stringify({ success: false, message: "Erro de Servidor" }));
       }
     });
     return;
   }
-  // 3. Endpoint de REGISTO
+  // 2. Endpoint de REGISTO
   if (req.url === "/api/register" && req.method === "POST") {
     let body = "";
     req.on("data", (chunk) => (body += chunk.toString()));
@@ -105,16 +90,20 @@ const server = http.createServer(async (req, res) => {
           );
           return;
         }
+        const salt = crypto.randomBytes(16).toString('hex');
 
-        // Criar o novo objeto User
+        const derivedKey = crypto.scryptSync(password, salt, 64);
+        const hash = derivedKey.toString('hex');
+
         const newUser = {
           username,
           email,
-          password, // Nota: Em produção real, deverias usar hash/encriptação
+          salt,
+          hash,
           createdAt: new Date(),
         };
 
-        const result = await usersCollection.insertOne(newUser);
+        await usersCollection.insertOne(newUser);
 
         res.writeHead(201, { "Content-Type": "application/json" });
         res.end(
@@ -137,13 +126,12 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
-  // 4. Endpoint de MOSTRAR CATEGORIAS do utilizador ---
+  // 3. Endpoint de MOSTRAR CATEGORIAS do utilizador ---
   if (req.url.startsWith("/api/categories") && req.method === "GET") {
     const urlParams = new URLSearchParams(req.url.split("?")[1]);
     const userId = urlParams.get("userId");
 
     try {
-      // Nota: Usa o nome exato da coleção "categories" (minúscula)
       const categories = await db
         .collection("categories")
         .find({ userId: userId })
@@ -157,7 +145,7 @@ const server = http.createServer(async (req, res) => {
     }
     return;
   }
-  // 4.1 Endpoint de CRIAR CATEGORIA ---
+  // 3.1 Endpoint de CRIAR CATEGORIA ---
   if (req.url === "/api/categories" && req.method === "POST") {
     let body = "";
     req.on("data", (chunk) => (body += chunk.toString()));
@@ -201,69 +189,68 @@ const server = http.createServer(async (req, res) => {
     });
     return;
   }
-  // 5. Endpoint de TAREFAS do utilizador ---
-  if (req.url.startsWith("/api/tasks") && req.method === "GET") {
-    const urlParams = new URLSearchParams(req.url.split("?")[1]);
-    const userId = urlParams.get("userId");
-
-    try {
-      const tasks = await db
-        .collection("tasks")
-        .find({ userId: userId })
-        .toArray();
-      res.writeHead(200, { "Content-Type": "application/json" });
-      res.end(JSON.stringify(tasks));
-    } catch (error) {
-      console.error(error);
-      res.writeHead(500);
-      res.end(JSON.stringify({ error: "Erro ao buscar tarefas" }));
+  // 4. Endpoint de TAREFAS (POST e GET) ---
+ if (req.url.startsWith("/api/tasks") && !req.url.includes("/api/tasks/")) {
+    if (req.method === "GET") {
+        const userId = new URLSearchParams(req.url.split("?")[1]).get("userId");
+        const tasks = await db.collection("tasks").find({ userId }).toArray();
+        res.writeHead(200, { "Content-Type": "application/json" });
+        res.end(JSON.stringify(tasks));
+        return;
     }
-    return;
+    if (req.method === "POST") {
+        let body = "";
+        req.on("data", (chunk) => (body += chunk.toString()));
+        req.on("end", async () => {
+            const data = JSON.parse(body);
+            const newTask = { 
+                ...data, 
+                status: "Pending", 
+                createdAt: new Date() 
+            };
+            const result = await db.collection("tasks").insertOne(newTask);
+            res.writeHead(201, { "Content-Type": "application/json" });
+            res.end(JSON.stringify({ success: true, task: {...newTask, _id: result.insertedId} }));
+        });
+        return;
+    }
   }
-  // 5.1 Endpoint de CRIAR TAREFA
-  if (req.url === "/api/tasks" && req.method === "POST") {
+  // 4.1 Endpoint de ATUALIZAR TAREFA (PUT) ---
+  if (req.url.startsWith("/api/tasks/") && req.method === "PUT") {
+    const taskId = req.url.split("/").pop(); // Pega o ID da URL
+
     let body = "";
     req.on("data", (chunk) => (body += chunk.toString()));
 
     req.on("end", async () => {
       try {
-        const taskData = JSON.parse(body);
+        const updates = JSON.parse(body);
+        
+        delete updates._id; 
 
-        // Validação básica
-        if (!taskData.userId || !taskData.categoryId || !taskData.title) {
-          res.writeHead(400);
-          res.end(
-            JSON.stringify({ success: false, message: "Dados incompletos." })
-          );
-          return;
+        const result = await db.collection("tasks").updateOne(
+            { _id: new ObjectId(taskId) },
+            { $set: updates }
+        );
+
+        if (result.matchedCount === 0) {
+            res.writeHead(404, { "Content-Type": "application/json" });
+            res.end(JSON.stringify({ success: false, message: "Tarefa não encontrada." }));
+            return;
         }
 
-        const newTask = {
-          ...taskData,
-          status: "Pending", // Estado inicial padrão
-          createdAt: new Date(),
-        };
+        res.writeHead(200, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ success: true, message: "Tarefa atualizada." }));
 
-        const result = await db.collection("tasks").insertOne(newTask);
-
-        res.writeHead(201, { "Content-Type": "application/json" });
-        res.end(
-          JSON.stringify({
-            success: true,
-            task: { ...newTask, _id: result.insertedId },
-          })
-        );
       } catch (error) {
-        console.error("Erro ao criar tarefa:", error);
-        res.writeHead(500);
-        res.end(
-          JSON.stringify({ success: false, message: "Erro de servidor." })
-        );
+        console.error("Erro ao atualizar tarefa:", error);
+        res.writeHead(500, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ success: false, message: "Erro interno." }));
       }
     });
     return;
   }
-  // 6. Rota não encontrada
+  // 5. Rota não encontrada
   res.writeHead(404, { "Content-Type": "application/json" });
   res.end(
     JSON.stringify({
@@ -277,20 +264,14 @@ const server = http.createServer(async (req, res) => {
 // --- Inicialização ---
 async function startServer() {
   try {
-    console.log(" A tentar conectar ao MongoDB...");
-    // 1. Conecta ao Mongo
     await client.connect();
     db = client.db(DB_NAME);
-    console.log("Conectado ao MongoDB com sucesso!");
 
-    // 2. Inicia o Servidor HTTP
     server.listen(PORT, () => {
-      console.log(` Servidor Backend a correr em http://localhost:${PORT}`);
-      console.log(` (Pressiona Ctrl+C para parar)`);
     });
   } catch (error) {
     console.error(" Erro fatal ao conectar ao MongoDB:", error);
-    process.exit(1); // Encerra se não conseguir ligar à BD
+    process.exit(1);
   }
 }
 

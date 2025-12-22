@@ -2,6 +2,7 @@ import { AppStore } from "../app.js";
 import { ApiService } from "../services/api.js";
 import { CategoryList } from "../components/categoryList.js";
 import { openCreateCategoryModal } from '../components/create-category.js';
+import { openTutorial } from '../components/tutorial.js';
 
 export function renderDashboardView() {
   const dashboard = document.createElement("div");
@@ -9,7 +10,6 @@ export function renderDashboardView() {
   dashboard.className = "dashboard-layout";
 
   const user = AppStore.currentUser;
-  // --- B. Área Principal ---
   const mainContent = document.createElement("main");
   mainContent.className = "main-content";
 
@@ -22,11 +22,15 @@ export function renderDashboardView() {
   actionBar.innerHTML = `
         <h2 id="page-title" class="title">As minhas Categorias</h2>
         <div class="actions">
-            <button id="btn-back" class="button-style" style="display:none;">← Voltar</button>
+            <button id="btn-tutorial" class="button-style secondary">? Ajuda</button>
             <button id="btn-add-task" class="button-style">+ Criar Categoria</button>
         </div>
     `;
   const btnAdd = actionBar.querySelector("#btn-add-task");
+  const btnTutorial = actionBar.querySelector("#btn-tutorial");
+  btnTutorial.addEventListener("click", () => {
+      openTutorial();
+  });
 
   btnAdd.addEventListener("click", () => {
       openCreateCategoryModal((newCategory) => {
@@ -45,33 +49,28 @@ export function renderDashboardView() {
     const component = CategoryList.render(
       AppStore.categories,
       AppStore.tasks,
-      AppStore.activeCategory, // O estado decide o layout! [cite: 37]
+      AppStore.activeCategory,
 
-      // Callback: Ao clicar numa categoria
+
       (selectedId) => {
         AppStore.activeCategory = selectedId;
-        updateView(); // Redesenha (muda para Focus Mode)
+        updateView();
       },
-
-      // Callback: Ao clicar no X
       () => {
         AppStore.activeCategory = null;
-        updateView(); // Redesenha (muda para Overview Mode)
+        updateView();
       }
     );
 
     contentArea.appendChild(component);
   };
 
-  // Carregar Dados Iniciais
   loadData(user._id).then(() => {
     updateView();
   });
 
   return dashboard;
 }
-
-// Função auxiliar para buscar e renderizar os dados
 async function loadData(userId) {
   try {
     const [categories, tasks] = await Promise.all([

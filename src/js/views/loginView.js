@@ -6,8 +6,6 @@ export function renderLoginView() {
   const container = document.createElement("div");
   container.className = "view-container";
   
-  // Criamos um container com scroll para englobar as duas secções
-  // Isto garante que a Navbar (que está fora disto) fica sempre visível
   container.innerHTML = `
     <div id="scroll-container" class="login-scroll-container">
         
@@ -20,8 +18,8 @@ export function renderLoginView() {
                 <input type="password" id="password-input" placeholder="Password" autocomplete="current-password" />
 
                 <div class="action-buttons">
-                    <button id="btn-signup" class="button-style">Criar Conta</button>
                     <button id="btn-login" class="button-style">Entrar</button>
+                    <button id="btn-signup" class="button-style secondary">Criar Conta</button>
                 </div>
                 <p id="error-msg" style="color: red; display: none; margin-top:10px;"></p>
             </div>
@@ -67,7 +65,7 @@ export function renderLoginView() {
   const loginSection = container.querySelector("#login-section");
   const aboutSection = container.querySelector("#about-section");
 
-  // 1. Botões de Navegação (Clique)
+  // 1. Botões de Navegação
   container.querySelector("#go-to-about").addEventListener("click", () => {
     aboutSection.scrollIntoView({ behavior: "smooth" });
   });
@@ -76,13 +74,12 @@ export function renderLoginView() {
     loginSection.scrollIntoView({ behavior: "smooth" });
   });
 
-  // 2. Navegação por Teclado (Setas)
-  // Nota: Adicionamos o listener ao documento, mas precisamos de garantir que não interfere com inputs
+  // 2. Navegação por Teclado
   const handleKeyScroll = (e) => {
     if (document.activeElement.tagName === "INPUT") return;
 
     if (e.key === "ArrowDown") {
-        e.preventDefault(); // Impede o scroll padrão brusco
+        e.preventDefault();
         aboutSection.scrollIntoView({ behavior: "smooth" });
     } else if (e.key === "ArrowUp") {
         e.preventDefault();

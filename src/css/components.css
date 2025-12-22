@@ -17,6 +17,24 @@
     color: white;
 }
 
+.button-style.danger {
+    background-color: var(--darkestRed);
+    color: white;
+}
+
+.button-style.danger:hover {
+    background-color: var(--darkred);
+    box-shadow: 0 0 0 2px rgba(206, 23, 23, 0.2);
+}
+
+.button-style.secondary {
+    background-color: #95a5a6;
+    color: white;
+}
+.button-style.secondary:hover {
+    background-color: #7f8c8d;
+}
+
 
 input[type="text"],
 input[type="password"],
@@ -96,4 +114,66 @@ input:focus, select:focus, textarea:focus {
     justify-content: flex-end;
     gap: 10px;
     margin-top: 20px;
+}
+
+.tutorial-card {
+    max-width: 600px;
+    text-align: left;
+}
+
+.tutorial-header-title {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.tutorial-content {
+    max-height: 60vh;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.tutorial-content::-webkit-scrollbar {
+    width: 6px;
+}
+.tutorial-content::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 4px;
+}
+
+.tutorial-section {
+    margin-bottom: 20px;
+}
+
+.tutorial-subtitle {
+    color: var(--accent-color);
+    margin-bottom: 5px;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.tutorial-text {
+    color: #555;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.tutorial-list {
+    padding-left: 20px;
+    margin-top: 5px;
+    color: #666;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.tutorial-list li {
+    margin-bottom: 5px;
+}
+
+.tutorial-footer {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    border-top: 1px solid #eee;
+    padding-top: 20px;
 }

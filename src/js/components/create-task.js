@@ -5,7 +5,6 @@ export function openCreateTaskModal(categoryId, onSuccess) {
     const modalContainer = document.getElementById('modal-container');
     if (!modalContainer) return;
 
-    // HTML do Modal
     modalContainer.innerHTML = `
         <div class="modal-overlay">
             <div class="modal-card" style="max-width: 500px;">
@@ -28,9 +27,9 @@ export function openCreateTaskModal(categoryId, onSuccess) {
                             <span id="urgency-preview" class="urgency-dot urgency-low"></span>
                             <select id="task-urgency" style="flex: 1; padding: 8px; border-radius: 5px; border: 1px solid #444; background: #222; color: white;">
                                 <option value="Normal">Default (Normal)</option>
-                                <option value="Baixa">Pouca</option>
-                                <option value="Amarelo">Média</option>
-                                <option value="Vermelho">Alta</option>
+                                <option value="Baixa">Baixa</option>
+                                <option value="Media">Média</option>
+                                <option value="Alta">Alta</option>
                             </select>
                         </div>
                     </div>
@@ -57,16 +56,14 @@ export function openCreateTaskModal(categoryId, onSuccess) {
                 <p id="task-error" style="color: red; display: none; font-size: 0.9rem; margin-bottom: 10px;"></p>
 
                 <div class="modal-actions">
-                    <button id="btn-cancel" class="button-style">Cancelar</button>
+                    <button id="btn-cancel" class="button-style danger">Cancelar</button>
                     <button id="btn-confirm-task" class="button-style">Criar Tarefa</button>
                 </div>
             </div>
         </div>
     `;
 
-    // --- LÓGICA DO DOM ---
 
-    // 1. Controle visual da cor de urgência
     const urgencySelect = document.getElementById('task-urgency');
     const urgencyDot = document.getElementById('urgency-preview');
     
@@ -74,13 +71,12 @@ export function openCreateTaskModal(categoryId, onSuccess) {
         const val = e.target.value;
         urgencyDot.className = 'urgency-dot'; // reset
         
-        if (val === 'Vermelho') urgencyDot.classList.add('urgency-high');       // Vermelho
-        else if (val === 'Amarelo') urgencyDot.classList.add('urgency-medium'); // Amarelo
-        else if (val === 'Baixa') urgencyDot.classList.add('urgency-low');      // Verde (ou similar)
-        else urgencyDot.classList.add('urgency-low');                           // Cinza/Default
+        if (val === 'Alta') urgencyDot.classList.add('urgency-high');
+        else if (val === 'Media') urgencyDot.classList.add('urgency-medium'); 
+        else if (val === 'Baixa') urgencyDot.classList.add('urgency-low');
+        else urgencyDot.classList.add('urgency-recurrent');
     });
 
-    // 2. Mostrar/Esconder Subtarefas
     const checkSub = document.getElementById('check-subtasks');
     const subArea = document.getElementById('subtasks-area');
     const subList = document.getElementById('subtasks-list');
@@ -89,11 +85,10 @@ export function openCreateTaskModal(categoryId, onSuccess) {
     checkSub.addEventListener('change', (e) => {
         subArea.style.display = e.target.checked ? 'block' : 'none';
         if (e.target.checked && subList.children.length === 0) {
-            addNewSubtaskInput(); // Adiciona um campo automaticamente se estiver vazio
+            addNewSubtaskInput();
         }
     });
 
-    // 3. Adicionar input de subtarefa dinâmico
     function addNewSubtaskInput() {
         const div = document.createElement('div');
         div.style.marginBottom = '5px';
@@ -104,22 +99,17 @@ export function openCreateTaskModal(categoryId, onSuccess) {
             <button type="button" class="remove-sub" style="margin-left: 5px; background: none; border: none; color: #ff5555; cursor: pointer;">✕</button>
         `;
 
-        // Remover linha
         div.querySelector('.remove-sub').addEventListener('click', () => div.remove());
         subList.appendChild(div);
         
-        // Focar no novo input
         div.querySelector('input').focus();
     }
 
     btnAddSub.addEventListener('click', addNewSubtaskInput);
-
-
-    // 4. Fechar Modal
     const closeModal = () => modalContainer.innerHTML = '';
     document.getElementById('btn-cancel').addEventListener('click', closeModal);
 
-    // 5. SALVAR TAREFA
+
     document.getElementById('btn-confirm-task').addEventListener('click', async () => {
         const title = document.getElementById('task-title').value;
         const description = document.getElementById('task-desc').value;
@@ -132,8 +122,6 @@ export function openCreateTaskModal(categoryId, onSuccess) {
             errorMsg.style.display = 'block';
             return;
         }
-
-        // Recolher Subtarefas
         let subTasks = [];
         if (checkSub.checked) {
             const inputs = subList.querySelectorAll('.subtask-input');
@@ -160,7 +148,7 @@ export function openCreateTaskModal(categoryId, onSuccess) {
         const response = await ApiService.createTask(newTaskPayload);
 
         if (response.success) {
-            onSuccess(response.task); // Callback para atualizar a UI
+            onSuccess(response.task); 
             closeModal();
         } else {
             errorMsg.textContent = response.message;

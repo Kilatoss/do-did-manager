@@ -40,9 +40,7 @@ export const CategoryList = {
             `;
             const renderTable = () => {
                 const contentDiv = heroCard.querySelector('.tasks-content');
-                contentDiv.innerHTML = ''; // Limpar conteúdo antigo
-                
-                // Usar a função importada de taskList.js
+                contentDiv.innerHTML = ''; 
                 const taskTable = renderTaskList(activeTasks);
                 contentDiv.appendChild(taskTable);
             };
@@ -50,7 +48,6 @@ export const CategoryList = {
             const taskTable = renderTaskList(activeTasks);
             heroCard.querySelector('.tasks-content').appendChild(taskTable);
 
-            // Evento Criar Tarefa
             const btnCreate = heroCard.querySelector('#btn-create-task-hero');
             btnCreate.addEventListener('click', () => {
                 openCreateTaskModal(activeCategory._id, (newTask) => {
@@ -60,7 +57,6 @@ export const CategoryList = {
                 });
             });
 
-            // Evento Fechar
             heroCard.querySelector('.close-category-btn').addEventListener('click', (e) => {
                 e.stopPropagation();
                 onClose();
@@ -111,7 +107,7 @@ function createSimpleCard(category, allTasks, onClick) {
     card.innerHTML = `
         <h3 style="color: ${category.color}">${category.name}</h3>
         <p style="font-size: 0.9rem; color: #666;">${category.description || ''}</p>
-        <div style="margin-top: auto; padding-top: 10px;">
+        <div style="margin-top: -15px; ">
             <span style="background: var(--secondary-color); padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">
                 <strong>${pendingCount}</strong> pendentes
             </span>

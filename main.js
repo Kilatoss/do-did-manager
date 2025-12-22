@@ -1,12 +1,7 @@
-// main.js
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
-
-// --- ADIÇÃO: Inicia o servidor Backend ---
-// Isto vai executar o código do server.js (ligar ao Mongo e abrir a porta 3000)
-// assim que a aplicação abrir. Sem fork, sem bibliotecas extra.
 require('./server.js'); 
-// -----------------------------------------
+
 
 if (process.env.NODE_ENV !== 'production') {
     try {
@@ -18,7 +13,7 @@ function createWindow() {
     const mainWindow = new BrowserWindow({
         webPreferences: {
             contextIsolation: false,
-            nodeIntegration: true // Recomendado true para este setup simples
+            nodeIntegration: true,
         },
         width: 1000,
         height: 700,
@@ -31,12 +26,7 @@ function createWindow() {
         }
     });
 
-    // Certifica-te que este caminho está correto baseada na tua estrutura de pastas
-    // Se o index.html está em /public, isto está correto:
     mainWindow.loadFile(path.join(__dirname, 'public/index.html'));
-
-    // Opcional: Abrir DevTools
-    // mainWindow.webContents.openDevTools();
 }
 
 app.whenReady().then(() => {

@@ -11,14 +11,13 @@
     --primary-color: #8fb6da;
     --accent-color: #0b8df7;
     --red: #ce1717;
+    --darkred: #a51212;
+    --darkestRed: #7a0e0e;
     --title-color: #312b31;
     --text-color: #424546;
     --secondary-color: #f1f1f1;
     --input-border: #ccc;
     --input-focus: #0b8df7;
-}
-.red {
-    color: var(--red) !important;
 }
 
 * {

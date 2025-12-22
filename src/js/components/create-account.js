@@ -3,8 +3,6 @@ import { ApiService } from '../services/api.js';
 export function openCreateAccountModal() {
     const modalContainer = document.getElementById('modal-container');
     if (!modalContainer) return;
-
-    // 1. HTML do Modal
     modalContainer.innerHTML = `
         <div class="modal-overlay">
             <div class="modal-card">
@@ -28,7 +26,7 @@ export function openCreateAccountModal() {
                 <p id="reg-error" style="color: red; display: none; font-size: 0.9rem; margin-bottom: 10px;"></p>
 
                 <div class="modal-actions">
-                    <button id="btn-cancel" class="button-style">Cancelar</button>
+                    <button id="btn-cancel" class="button-style danger">Cancelar</button>
                     <button id="btn-confirm-create" class="button-style">Criar Conta</button>
                 </div>
             </div>

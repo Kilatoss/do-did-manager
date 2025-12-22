@@ -1,27 +1,25 @@
 import { ApiService } from '../services/api.js';
 import { AppStore } from '../app.js';
 
-// Paleta de 12 cores harmoniosas
 const COLORS = [
-    '#E74C3C', // Vermelho Suave
-    '#E67E22', // Laranja
-    '#F1C40F', // Amarelo Girassol
-    '#2ECC71', // Esmeralda
-    '#16A085', // Verde Mar
-    '#3498DB', // Azul (diferente do background)
-    '#9B59B6', // Ametista
-    '#8E44AD', // Roxo Profundo
-    '#34495E', // Azul acinzentado escuro
-    '#E91E63', // Rosa
-    '#1ABC9C', // Turquesa
-    '#95A5A6'  // Cinza Neutro
+    '#E74C3C', 
+    '#E67E22', 
+    '#F1C40F', 
+    '#2ECC71', 
+    '#16A085', 
+    '#3498DB', 
+    '#9B59B6', 
+    '#ad448dff', 
+    '#34495E', 
+    '#E91E63', 
+    '#1ABC9C', 
+    '#95A5A6'  
 ];
 
 export function openCreateCategoryModal(onSuccessCallback) {
     const modalContainer = document.getElementById('modal-container');
     if (!modalContainer) return;
 
-    // 1. Gerar HTML das Cores
     const colorOptionsHTML = COLORS.map((color, index) => `
         <div class="color-option ${index === 0 ? 'selected' : ''}" 
              style="background-color: ${color};" 
@@ -30,7 +28,6 @@ export function openCreateCategoryModal(onSuccessCallback) {
         </div>
     `).join('');
 
-    // 2. Injetar HTML do Modal
     modalContainer.innerHTML = `
         <div class="modal-overlay">
             <div class="modal-card">
@@ -57,37 +54,31 @@ export function openCreateCategoryModal(onSuccessCallback) {
                 <p id="cat-error" style="color: red; display: none; font-size: 0.9rem; margin-top: 10px;"></p>
 
                 <div class="modal-actions">
-                    <button id="btn-cancel-cat" class="button-style">Cancelar</button>
+                    <button id="btn-cancel-cat" class="button-style danger">Cancelar</button>
                     <button id="btn-confirm-cat" class="button-style">Criar</button>
                 </div>
             </div>
         </div>
     `;
 
-    // Variável para guardar a cor selecionada (começa com a primeira)
     let selectedColor = COLORS[0];
 
-    // 3. Lógica de Seleção de Cor
     const colorDivs = modalContainer.querySelectorAll('.color-option');
     colorDivs.forEach(div => {
         div.addEventListener('click', () => {
-            // Remove seleção anterior
             colorDivs.forEach(d => {
                 d.classList.remove('selected');
                 d.innerHTML = '';
             });
-            // Adiciona nova seleção
+
             div.classList.add('selected');
-            div.innerHTML = '✓'; // Marca visual
+            div.innerHTML = '✓';
             selectedColor = div.dataset.color;
         });
     });
-
-    // 4. Fechar Modal
+    
     const closeModal = () => modalContainer.innerHTML = '';
     modalContainer.querySelector('#btn-cancel-cat').addEventListener('click', closeModal);
-
-    // 5. Confirmar Criação
     modalContainer.querySelector('#btn-confirm-cat').addEventListener('click', async () => {
         const name = document.getElementById('cat-name').value;
         const description = document.getElementById('cat-desc').value;
@@ -100,7 +91,7 @@ export function openCreateCategoryModal(onSuccessCallback) {
         }
 
         const payload = {
-            userId: AppStore.currentUser._id, // Associa ao user logado
+            userId: AppStore.currentUser._id,
             name,
             description,
             color: selectedColor
@@ -110,7 +101,6 @@ export function openCreateCategoryModal(onSuccessCallback) {
 
         if (response.success) {
             closeModal();
-            // Executa o callback para atualizar a UI (adicionar o cartão novo)
             if (onSuccessCallback) onSuccessCallback(response.category);
         } else {
             errorMsg.textContent = response.message || "Erro ao criar.";

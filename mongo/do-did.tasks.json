@@ -1,0 +1,207 @@
+[{
+  "_id": {
+    "$oid": "69473e3f589372792a97256a"
+  },
+  "userId": "6942777cd43dc7f154547663",
+  "categoryId": "69472ae9e849ec3c0bbe4dcf",
+  "title": "Fazer o trabalho de DWeb",
+  "description": "Fazer um website com base de dados e tals...",
+  "urgency": "Normal",
+  "deadline": "2025-12-22T23:59",
+  "subTasks": [
+    {
+      "title": "Conexão com Base de dados",
+      "completed": true
+    },
+    {
+      "title": "Criar conta",
+      "completed": true
+    },
+    {
+      "title": "Criar Categoria",
+      "completed": false
+    }
+  ],
+  "status": "Pending",
+  "createdAt": {
+    "$date": "2025-12-21T00:24:31.067Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "69474216589372792a97256b"
+  },
+  "userId": "6942777cd43dc7f154547663",
+  "categoryId": "69472ae9e849ec3c0bbe4dcf",
+  "title": "Enviar trabalho",
+  "description": "tarefa de exemplo testar o tamanho do campo de descrição aaaaaaaaaaa aaaaaaaaa aaaaaaaaaa aaaaaaaaaa aaaaaaaaaaa  ",
+  "urgency": "Normal",
+  "deadline": "",
+  "subTasks": [],
+  "status": "Pending",
+  "createdAt": {
+    "$date": "2025-12-21T00:40:54.269Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6948a0ef90ea5407f8cb5e48"
+  },
+  "userId": "6942777cd43dc7f154547663",
+  "categoryId": "69489d9b90ea5407f8cb5e47",
+  "title": "Fazer a cama",
+  "description": "é isso mesmo...",
+  "urgency": "Normal",
+  "deadline": "1970-01-01T12:00:00.000+00:00",
+  "subTasks": [],
+  "status": "Completed_1766374840438",
+  "createdAt": {
+    "$date": "2025-12-22T01:37:51.094Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6948a11590ea5407f8cb5e49"
+  },
+  "userId": "6942777cd43dc7f154547663",
+  "categoryId": "69489d9b90ea5407f8cb5e47",
+  "title": "Arrumar o quarto",
+  "description": "pois",
+  "urgency": "Baixa",
+  "deadline": "1970-01-01T12:00:00.000+00:00",
+  "subTasks": [],
+  "status": "Deleted_1766374799002",
+  "createdAt": {
+    "$date": "2025-12-22T01:38:29.591Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6948a13b90ea5407f8cb5e4a"
+  },
+  "userId": "6942777cd43dc7f154547663",
+  "categoryId": "69489d9b90ea5407f8cb5e47",
+  "title": "limpar o pc",
+  "description": "porque ta dificil",
+  "urgency": "Normal",
+  "deadline": "1970-01-01T12:00:00.000+00:00",
+  "subTasks": [
+    {
+      "title": "Apagar coisas desnecessarias",
+      "completed": false
+    },
+    {
+      "title": "Por tudo em pastas",
+      "completed": false
+    }
+  ],
+  "status": "Pending",
+  "createdAt": {
+    "$date": "2025-12-22T01:39:07.745Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6948d2213615c9972f89e0fe"
+  },
+  "userId": "6942777cd43dc7f154547663",
+  "categoryId": "69472ae9e849ec3c0bbe4dcf",
+  "title": "Pouco",
+  "description": "",
+  "urgency": "Baixa",
+  "deadline": "1970-01-01T12:00:00.000+00:00",
+  "subTasks": [],
+  "status": "Pending",
+  "createdAt": {
+    "$date": "2025-12-22T05:07:45.686Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6948d2824f49e582334eb1ae"
+  },
+  "userId": "6942777cd43dc7f154547663",
+  "categoryId": "69472ae9e849ec3c0bbe4dcf",
+  "title": "pouca",
+  "description": "pouca",
+  "urgency": "Baixa",
+  "deadline": "1970-01-01T12:00:00.000+00:00",
+  "subTasks": [],
+  "status": "Deleted_1766380376124",
+  "createdAt": {
+    "$date": "2025-12-22T05:09:22.570Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6948d36bb6df8d502e2d0e80"
+  },
+  "userId": "6942777cd43dc7f154547663",
+  "categoryId": "69472ae9e849ec3c0bbe4dcf",
+  "title": "Media",
+  "description": "",
+  "urgency": "Media",
+  "deadline": "1970-01-01T12:00:00.000+00:00",
+  "subTasks": [],
+  "status": "Pending",
+  "createdAt": {
+    "$date": "2025-12-22T05:13:15.280Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6948d378b6df8d502e2d0e81"
+  },
+  "userId": "6942777cd43dc7f154547663",
+  "categoryId": "69472ae9e849ec3c0bbe4dcf",
+  "title": "Alta",
+  "description": "",
+  "urgency": "Alta",
+  "deadline": "1970-01-01T12:00:00.000+00:00",
+  "subTasks": [],
+  "status": "Pending",
+  "createdAt": {
+    "$date": "2025-12-22T05:13:28.573Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6948da636b38fb299abfe72c"
+  },
+  "userId": "6942777cd43dc7f154547663",
+  "categoryId": "6948aa5390ea5407f8cb5e4b",
+  "title": "Nova Tarefa",
+  "description": "woohuooll",
+  "urgency": "Normal",
+  "deadline": "1970-01-01T12:00:00.000+00:00",
+  "subTasks": [],
+  "status": "Pending",
+  "createdAt": {
+    "$date": "2025-12-22T05:42:59.244Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6948da746b38fb299abfe72d"
+  },
+  "userId": "6942777cd43dc7f154547663",
+  "categoryId": "6948aa5390ea5407f8cb5e4b",
+  "title": "TAREFA COM SUBTAREDAS",
+  "description": "FADSFASDFASDFaaaaaaaaaaaaaaaa aaaaaaaaa aaaaaaa aaaaaaaa a aaaaaaa aaaaa aaaa",
+  "urgency": "Normal",
+  "deadline": "1970-01-01T12:00:00.000+00:00",
+  "subTasks": [
+    {
+      "title": "UMA",
+      "completed": false
+    },
+    {
+      "title": "DUAS",
+      "completed": false
+    }
+  ],
+  "status": "Pending",
+  "createdAt": {
+    "$date": "2025-12-22T05:43:16.535Z"
+  }
+}]

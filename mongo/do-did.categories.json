@@ -1,0 +1,120 @@
+[{
+  "_id": {
+    "$oid": "69472ae9e849ec3c0bbe4dcf"
+  },
+  "name": "Trabalho",
+  "userId": "6942777cd43dc7f154547663",
+  "description": "Aqui vou por os meus trabalhos.",
+  "color": "#E74C3C",
+  "createdAt": {
+    "$date": "2025-12-20T23:02:01.832Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "69489d9b90ea5407f8cb5e47"
+  },
+  "name": "Housekeeping",
+  "userId": "6942777cd43dc7f154547663",
+  "description": "Tarefas Domésticas",
+  "color": "#3498DB",
+  "createdAt": {
+    "$date": "2025-12-22T01:23:39.387Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6948aa5390ea5407f8cb5e4b"
+  },
+  "name": "Outra categoria",
+  "userId": "6942777cd43dc7f154547663",
+  "description": "vai estar vazia",
+  "color": "#8E44AD",
+  "createdAt": {
+    "$date": "2025-12-22T02:17:55.336Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6948aa6790ea5407f8cb5e4c"
+  },
+  "name": "Uma ultima categoria",
+  "userId": "6942777cd43dc7f154547663",
+  "description": "omds ha mais",
+  "color": "#9B59B6",
+  "createdAt": {
+    "$date": "2025-12-22T02:18:15.698Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6948aaa590ea5407f8cb5e4d"
+  },
+  "name": "SIIIKE theres another one",
+  "userId": "6942777cd43dc7f154547663",
+  "description": "heheheheh",
+  "color": "#E91E63",
+  "createdAt": {
+    "$date": "2025-12-22T02:19:17.505Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6948add190ea5407f8cb5e4e"
+  },
+  "name": "asda",
+  "userId": "6942777cd43dc7f154547663",
+  "description": "asfasf",
+  "color": "#F1C40F",
+  "createdAt": {
+    "$date": "2025-12-22T02:32:49.268Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6948add590ea5407f8cb5e4f"
+  },
+  "name": "asfasf",
+  "userId": "6942777cd43dc7f154547663",
+  "description": "asdasda",
+  "color": "#34495E",
+  "createdAt": {
+    "$date": "2025-12-22T02:32:53.791Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6948add990ea5407f8cb5e50"
+  },
+  "name": "dfgdf",
+  "userId": "6942777cd43dc7f154547663",
+  "description": "gsdfsdf",
+  "color": "#3498DB",
+  "createdAt": {
+    "$date": "2025-12-22T02:32:57.728Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6948addd90ea5407f8cb5e51"
+  },
+  "name": "dfgdfg",
+  "userId": "6942777cd43dc7f154547663",
+  "description": "dfg",
+  "color": "#E67E22",
+  "createdAt": {
+    "$date": "2025-12-22T02:33:01.646Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6948ade090ea5407f8cb5e52"
+  },
+  "name": "dfgwrhrtdx",
+  "userId": "6942777cd43dc7f154547663",
+  "description": "",
+  "color": "#E74C3C",
+  "createdAt": {
+    "$date": "2025-12-22T02:33:04.357Z"
+  }
+}]

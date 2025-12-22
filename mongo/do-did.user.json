@@ -1,0 +1,23 @@
+[{
+  "_id": {
+    "$oid": "6942777cd43dc7f154547663"
+  },
+  "username": "admin",
+  "email": "dev@dodid.com",
+  "password": "123",
+  "createdAt": {
+    "$date": "2024-01-01T09:00:00.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6948c55f32651943932bb2fc"
+  },
+  "username": "afonso",
+  "email": "afonso@eu.pt",
+  "salt": "10f69b6f0453fa17166332491f8bbd96",
+  "hash": "97d935bcfd66137f68be9408ee81e958b8b5e87613e034dbf7cd2c7f6d910e1b8ba7ee577b7b5b06c15802eb6f357e79961b1b20513aeed35052c44092f8ef8b",
+  "createdAt": {
+    "$date": "2025-12-22T04:13:19.591Z"
+  }
+}]
